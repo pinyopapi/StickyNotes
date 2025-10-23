@@ -26,5 +26,72 @@ namespace StickyNotes.Domain.Entities
             UserId = userId;
         }
 
+        public void Update(string title, string content)
+        {
+            SetTitle(title);
+            SetContent(content);
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void ChangeColor(string color)
+        {
+            if (string.IsNullOrWhiteSpace(color))
+                throw new ArgumentException("Color cannot be empty");
+            Color = color;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Pin() => Pinned = true;
+        public void Unpin() => Pinned = false;
+
+        public void Archive()
+        {
+            IsArchived = true;
+            Pinned = false;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Restore()
+        {
+            IsArchived = false;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void AddTag(string tag)
+        {
+            if (!string.IsNullOrWhiteSpace(tag) && !Tags.Contains(tag))
+            {
+                Tags.Add(tag);
+                UpdatedAt = DateTime.UtcNow;
+            }
+        }
+
+        public void RemoveTag(string tag)
+        {
+            if (Tags.Contains(tag))
+            {
+                Tags.Remove(tag);
+                UpdatedAt = DateTime.UtcNow;
+            }
+        }
+
+        public void SetPosition(float x, float y)
+        {
+            PositionX = x;
+            PositionY = y;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        private void SetTitle(string title)
+        {
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Title cannot be empty");
+            Title = title;
+        }
+
+        private void SetContent(string content)
+        {
+            Content = content ?? string.Empty;
+        }
     }
 }
