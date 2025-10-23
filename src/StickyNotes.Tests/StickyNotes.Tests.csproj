@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>f448de60-d7ac-4f16-938c-09f3fe138976</ProjectGuid>
+    <ProjectGuid>{F448DE60-D7AC-4F16-938C-09F3FE138976}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>StickyNotes.Tests</RootNamespace>
@@ -31,24 +31,36 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System"/>
-    
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Data.DataSetExtensions"/>
-    
-    
-    <Reference Include="Microsoft.CSharp"/>
-    
-    <Reference Include="System.Data"/>
-    
-    <Reference Include="System.Net.Http"/>
-    
-    <Reference Include="System.Xml"/>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StickyNotes.Api\StickyNotes.Api.csproj">
+      <Project>{4fba882d-681e-3a19-cc41-5f9da7432416}</Project>
+      <Name>StickyNotes.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StickyNotes.Application\StickyNotes.Application.csproj">
+      <Project>{5c2f6a2d-1a2e-42c1-8473-7ea721617751}</Project>
+      <Name>StickyNotes.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StickyNotes.Domain\StickyNotes.Domain.csproj">
+      <Project>{f1bc0641-e122-4120-b951-f657eef770b5}</Project>
+      <Name>StickyNotes.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StickyNotes.Infrastructure\StickyNotes.Infrastructure.csproj">
+      <Project>{e84f8003-f67c-4520-8b20-0c882f158ff7}</Project>
+      <Name>StickyNotes.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
- </Project>
+</Project>
