@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StickyNotes.Application\StickyNotes.Application.csproj" />
-    <ProjectReference Include="..\StickyNotes.Infrastructure\StickyNotes.Infrastructure.csproj" />
+    <ProjectReference Include="..\StickyNotes.Application\StickyNotes.ApplicationOld.csproj" />
+    <ProjectReference Include="..\StickyNotes.Infrastructure\StickyNotes.InfrastructureOld.csproj" />
   </ItemGroup>
 
 </Project>
