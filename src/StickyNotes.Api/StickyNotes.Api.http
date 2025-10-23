@@ -1,0 +1,6 @@
+@StickyNotes.Api_HostAddress = http://localhost:5141
+
+GET {{StickyNotes.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
