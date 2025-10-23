@@ -1,4 +1,4 @@
-﻿namespace StickyNotes.Application
+﻿namespace StickyNotes.Infrastucture
 {
     public class Class1
     {

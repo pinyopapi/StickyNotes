@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StickyNotes.Domain
+﻿namespace StickyNotes.Domain
 {
     public class Class1
     {
+
     }
 }
