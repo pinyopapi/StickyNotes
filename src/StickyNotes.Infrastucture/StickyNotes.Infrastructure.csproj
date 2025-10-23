@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StickyNotes.Application\StickyNotes.Application.csproj" />
     <ProjectReference Include="..\StickyNotes.Domain\StickyNotes.Domain.csproj" />
   </ItemGroup>
 
