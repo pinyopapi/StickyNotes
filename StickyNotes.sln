@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StickyNotes.Application", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StickyNotes.Domain", "src\StickyNotes.Domain\StickyNotes.Domain.csproj", "{24C62D21-DD42-1DEB-D11B-1C0543ADA9A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StickyNotes.Infrastucture", "src\StickyNotes.Infrastucture\StickyNotes.Infrastucture.csproj", "{5C89B7E7-E17C-9E88-4469-16C351AE770E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StickyNotes.Infrastructure", "src\StickyNotes.Infrastucture\StickyNotes.Infrastructure.csproj", "{5C89B7E7-E17C-9E88-4469-16C351AE770E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StickyNotes.Tests", "src\StickyNotes.Tests\StickyNotes.Tests.csproj", "{87C03452-A441-1993-E52C-B3D2ABC4AE2C}"
 EndProject

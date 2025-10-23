@@ -1,7 +1,0 @@
-﻿namespace StickyNotes.Application
-{
-    public class Class1
-    {
-
-    }
-}
