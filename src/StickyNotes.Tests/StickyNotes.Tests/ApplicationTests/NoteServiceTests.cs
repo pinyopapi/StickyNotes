@@ -30,6 +30,17 @@ public class NoteServiceTests
         });
     }
 
+
+    [Test]
+    public async Task CreateNote_Should_Throw_When_GuidEmpty()
+    {
+        Assert.ThrowsAsync<ArgumentException>(async () =>
+        {
+            var note = await _service.CreateNoteAsync("Test", "Content", Guid.Empty);
+        });
+
+    }
+
     [Test]
     public async Task UpdateNote_Should_ChangeTitleAndContent()
     {
@@ -165,6 +176,4 @@ public class NoteServiceTests
             Assert.That(result.Count(), Is.EqualTo(1));
         });
     }
-
-
 }
