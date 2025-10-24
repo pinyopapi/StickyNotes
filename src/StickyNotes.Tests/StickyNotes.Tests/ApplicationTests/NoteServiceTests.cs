@@ -100,4 +100,11 @@ public class NoteServiceTests
         Assert.ThrowsAsync<ArgumentException>(async () =>
             await _service.CreateNoteAsync("", "content", _userId));
     }
+
+    [Test]
+    public void UpdateNote_Should_Throw_When_IdNotExists()
+    {
+        Assert.ThrowsAsync<KeyNotFoundException>(async () =>
+            await _service.UpdateNoteAsync(Guid.NewGuid(), "x", "y"));
+    }
 }
