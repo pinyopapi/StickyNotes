@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StickyNotes.Domain.Entities;
@@ -26,29 +27,30 @@ namespace StickyNotes.Infrastructure.Repositories
         public async Task DeleteAsync(Guid id)
         {
             var note = await GetByIdAsync(id);
-            if (note != null)
-            {
-                _context.Notes.Remove(note);
-                await _context.SaveChangesAsync();
-            }
+            if (note == null) return;
+
+            _context.Notes.Remove(note);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Note>> GetAllAsync(Guid? userId = null)
         {
             var query = _context.Notes.AsQueryable();
+
             if (userId.HasValue)
                 query = query.Where(n => n.UserId == userId.Value);
+
             return await query.ToListAsync();
         }
 
-        public async Task<Note> GetByIdAsync(Guid id)
+        public async Task<Note?> GetByIdAsync(Guid id)
         {
             return await _context.Notes.FirstOrDefaultAsync(n => n.Id == id);
         }
 
         public async Task UpdateAsync(Note note)
         {
-            _context.Notes.Update(note);
+            _context.Entry(note).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
     }
