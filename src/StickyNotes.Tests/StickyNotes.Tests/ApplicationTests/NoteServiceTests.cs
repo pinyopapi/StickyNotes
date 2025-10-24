@@ -44,4 +44,14 @@ public class NoteServiceTests
         });
     }
 
+    [Test]
+    public async Task PinNote_Should_SetPinnedTrue()
+    {
+        var note = await _service.CreateNoteAsync("A", "B", _userId);
+        await _service.PinNoteAsync(note.Id);
+
+        var result = await _service.GetNoteByIdAsync(note.Id);
+        Assert.That(result.Pinned, Is.True);
+    }
+
 }
