@@ -64,4 +64,14 @@ public class NoteServiceTests
         Assert.That(result.IsArchived, Is.True);
     }
 
+    [Test]
+    public async Task ChangeColor_Should_UpdateColor()
+    {
+        var note = await _service.CreateNoteAsync("A", "B", _userId);
+        await _service.ChangeColorAsync(note.Id, "#FF0000");
+
+        var result = await _service.GetNoteByIdAsync(note.Id);
+        Assert.That(result.Color, Is.EqualTo("#FF0000"));
+    }
+
 }
