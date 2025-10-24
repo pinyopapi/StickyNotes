@@ -128,4 +128,14 @@ public class NoteServiceTests
             await _service.ChangeColorAsync(note.Id, "");
         });
     }
+
+    [Test]
+    public async Task RemoveTag_Should_DoNothing_When_TagNotExist()
+    {
+        var note = await _service.CreateNoteAsync("T", "C", _userId);
+        await _service.RemoveTagAsync(note.Id, "nonexistent");
+
+        var result = await _service.GetNoteByIdAsync(note.Id);
+        Assert.That(result.Tags, Is.Empty);
+    }
 }
