@@ -107,4 +107,15 @@ public class NoteServiceTests
         Assert.ThrowsAsync<KeyNotFoundException>(async () =>
             await _service.UpdateNoteAsync(Guid.NewGuid(), "x", "y"));
     }
+
+    [Test]
+    public async Task AddTag_Should_NotDuplicate()
+    {
+        var note = await _service.CreateNoteAsync("T", "C", _userId);
+        await _service.AddTagAsync(note.Id, "tag1");
+        await _service.AddTagAsync(note.Id, "tag1");
+
+        var result = await _service.GetNoteByIdAsync(note.Id);
+        Assert.That(result.Tags, Has.Count.EqualTo(1));
+    }
 }
