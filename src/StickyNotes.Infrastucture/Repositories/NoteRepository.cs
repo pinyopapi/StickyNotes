@@ -1,74 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using StickyNotes.Domain.Entities;
 using StickyNotes.Application.Interfaces;
+using StickyNotes.Infrastructure.Persistence;
 
-namespace StickyNotes.Application.Services
+namespace StickyNotes.Infrastructure.Repositories
 {
-    public class NoteService : INoteService
+    public class NoteRepository : INoteRepository
     {
-        private readonly INoteRepository _repository;
+        private readonly AppDbContext _context;
 
-        public NoteService(INoteRepository repository)
+        public NoteRepository(AppDbContext context)
         {
-            _repository = repository;
+            _context = context;
         }
 
-        public async Task<IEnumerable<Note>> GetAllNotesAsync(Guid? userId = null)
+        public async Task AddAsync(Note note)
         {
-            return await _repository.GetAllAsync(userId);
+            await _context.Notes.AddAsync(note);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<Note> GetNoteByIdAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            var note = await _repository.GetByIdAsync(id);
-            if (note == null) throw new KeyNotFoundException("Note not found");
-            return note;
+            var note = await GetByIdAsync(id);
+            if (note != null)
+            {
+                _context.Notes.Remove(note);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task<Note> CreateNoteAsync(string title, string content, Guid userId)
+        public async Task<IEnumerable<Note>> GetAllAsync(Guid? userId = null)
         {
-            var note = new Note(title, content, userId);
-            await _repository.AddAsync(note);
-            return note;
+            var query = _context.Notes.AsQueryable();
+            if (userId.HasValue)
+                query = query.Where(n => n.UserId == userId.Value);
+            return await query.ToListAsync();
         }
 
-        public async Task<Note> UpdateNoteAsync(Guid id, string title, string content)
+        public async Task<Note> GetByIdAsync(Guid id)
         {
-            var note = await GetExistingNoteOrThrow(id);
-            note.Update(title, content);
-            await _repository.UpdateAsync(note);
-            return note;
+            return await _context.Notes.FirstOrDefaultAsync(n => n.Id == id);
         }
 
-        public async Task DeleteNoteAsync(Guid id)
+        public async Task UpdateAsync(Note note)
         {
-            await GetExistingNoteOrThrow(id);
-            await _repository.DeleteAsync(id);
-        }
-
-        public async Task PinNoteAsync(Guid id) => await PerformNoteAction(id, n => n.Pin());
-        public async Task UnpinNoteAsync(Guid id) => await PerformNoteAction(id, n => n.Unpin());
-        public async Task ArchiveNoteAsync(Guid id) => await PerformNoteAction(id, n => n.Archive());
-        public async Task RestoreNoteAsync(Guid id) => await PerformNoteAction(id, n => n.Restore());
-        public async Task AddTagAsync(Guid id, string tag) => await PerformNoteAction(id, n => n.AddTag(tag));
-        public async Task RemoveTagAsync(Guid id, string tag) => await PerformNoteAction(id, n => n.RemoveTag(tag));
-        public async Task ChangeColorAsync(Guid id, string color) => await PerformNoteAction(id, n => n.ChangeColor(color));
-        public async Task SetPositionAsync(Guid id, float x, float y) => await PerformNoteAction(id, n => n.SetPosition(x, y));
-
-        private async Task<Note> GetExistingNoteOrThrow(Guid id)
-        {
-            var note = await _repository.GetByIdAsync(id);
-            if (note == null) throw new KeyNotFoundException("Note not found");
-            return note;
-        }
-
-        private async Task PerformNoteAction(Guid id, Action<Note> action)
-        {
-            var note = await GetExistingNoteOrThrow(id);
-            action(note);
-            await _repository.UpdateAsync(note);
+            _context.Notes.Update(note);
+            await _context.SaveChangesAsync();
         }
     }
 }
