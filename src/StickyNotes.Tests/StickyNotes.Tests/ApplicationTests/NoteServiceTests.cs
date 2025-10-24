@@ -23,8 +23,11 @@ public class NoteServiceTests
         var note = await _service.CreateNoteAsync("Test", "Content", _userId);
 
         var allNotes = await _repository.GetAllAsync(_userId);
-        Assert.That(allNotes.Count(), Is.EqualTo(1));
-        Assert.That(note.Title, Is.EqualTo("Test"));
+        Assert.Multiple(() =>
+        {
+            Assert.That(allNotes.Count(), Is.EqualTo(1));
+            Assert.That(note.Title, Is.EqualTo("Test"));
+        });
     }
 
     [Test]
@@ -34,8 +37,11 @@ public class NoteServiceTests
 
         var updated = await _service.UpdateNoteAsync(note.Id, "New", "New");
 
-        Assert.That(updated.Title, Is.EqualTo("New"));
-        Assert.That(updated.Content, Is.EqualTo("New"));
+        Assert.Multiple(() =>
+        {
+            Assert.That(updated.Title, Is.EqualTo("New"));
+            Assert.That(updated.Content, Is.EqualTo("New"));
+        });
     }
 
 }
