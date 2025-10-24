@@ -74,4 +74,14 @@ public class NoteServiceTests
         Assert.That(result.Color, Is.EqualTo("#FF0000"));
     }
 
+    [Test]
+    public async Task AddTag_Should_AddNewTag()
+    {
+        var note = await _service.CreateNoteAsync("A", "B", _userId);
+        await _service.AddTagAsync(note.Id, "work");
+
+        var result = await _service.GetNoteByIdAsync(note.Id);
+        Assert.That(result.Tags, Does.Contain("work"));
+    }
+
 }
