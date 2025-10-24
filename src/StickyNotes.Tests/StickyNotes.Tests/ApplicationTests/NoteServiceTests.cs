@@ -138,4 +138,33 @@ public class NoteServiceTests
         var result = await _service.GetNoteByIdAsync(note.Id);
         Assert.That(result.Tags, Is.Empty);
     }
+
+    [Test]
+    public async Task GetAllNotesAsync_ShouldReturnAllNotes_WhenUserIdIsNull()
+    {
+        await _service.CreateNoteAsync("T1", "C1", _userId);
+        await _service.CreateNoteAsync("T2", "C2", Guid.NewGuid());
+
+        var result = await _service.GetAllNotesAsync(null);
+
+        Assert.That(result.Count(), Is.EqualTo(2));
+    }
+
+    [Test]
+    public async Task GetAllNotesAsync_ShouldReturnOnlyUserNotes_WhenUserIdProvided()
+    {
+        var otherUser = Guid.NewGuid();
+        await _service.CreateNoteAsync("T1", "C1", _userId);
+        await _service.CreateNoteAsync("T2", "C2", otherUser);
+
+        var result = await _service.GetAllNotesAsync(_userId);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.All(n => n.UserId == _userId), Is.True);
+            Assert.That(result.Count(), Is.EqualTo(1));
+        });
+    }
+
+
 }
