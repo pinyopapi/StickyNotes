@@ -19,6 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\StickyNotes.Api\StickyNotes.Api.csproj" />
+    <ProjectReference Include="..\..\StickyNotes.Application\StickyNotes.Application.csproj" />
+    <ProjectReference Include="..\..\StickyNotes.Domain\StickyNotes.Domain.csproj" />
+    <ProjectReference Include="..\..\StickyNotes.Infrastucture\StickyNotes.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
