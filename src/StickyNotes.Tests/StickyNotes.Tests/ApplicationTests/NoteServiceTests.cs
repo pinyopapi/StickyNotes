@@ -84,4 +84,13 @@ public class NoteServiceTests
         Assert.That(result.Tags, Does.Contain("work"));
     }
 
+    [Test]
+    public async Task DeleteNote_Should_RemoveNote()
+    {
+        var note = await _service.CreateNoteAsync("A", "B", _userId);
+        await _service.DeleteNoteAsync(note.Id);
+
+        var all = await _repository.GetAllAsync(_userId);
+        Assert.That(all.Any(), Is.False);
+    }
 }
