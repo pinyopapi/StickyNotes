@@ -27,4 +27,15 @@ public class NoteServiceTests
         Assert.That(note.Title, Is.EqualTo("Test"));
     }
 
+    [Test]
+    public async Task UpdateNote_Should_ChangeTitleAndContent()
+    {
+        var note = await _service.CreateNoteAsync("Old", "Old", _userId);
+
+        var updated = await _service.UpdateNoteAsync(note.Id, "New", "New");
+
+        Assert.That(updated.Title, Is.EqualTo("New"));
+        Assert.That(updated.Content, Is.EqualTo("New"));
+    }
+
 }
