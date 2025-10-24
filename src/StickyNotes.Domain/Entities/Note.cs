@@ -26,6 +26,8 @@ namespace StickyNotes.Domain.Entities
             UserId = userId;
         }
 
+        private Note() { }
+
         public void Update(string title, string content)
         {
             SetTitle(title);
