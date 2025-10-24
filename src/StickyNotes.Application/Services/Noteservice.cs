@@ -60,5 +60,11 @@ namespace StickyNotes.Application.Services
         public async Task ChangeColorAsync(Guid id, string color) => await ApplyDomainAction(id, n => n.ChangeColor(color));
         public async Task SetPositionAsync(Guid id, float x, float y) => await ApplyDomainAction(id, n => n.SetPosition(x, y));
 
+        private async Task ApplyDomainAction(Guid id, Action<Note> action)
+        {
+            var note = await GetNoteByIdAsync(id);
+            action(note);
+            await _repository.UpdateAsync(note);
+        }
     }
 }
