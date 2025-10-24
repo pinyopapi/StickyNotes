@@ -118,4 +118,14 @@ public class NoteServiceTests
         var result = await _service.GetNoteByIdAsync(note.Id);
         Assert.That(result.Tags, Has.Count.EqualTo(1));
     }
+
+    [Test]
+    public void ChangeColor_Should_Throw_When_EmptyColor()
+    {
+        Assert.ThrowsAsync<ArgumentException>(async () =>
+        {
+            var note = await _service.CreateNoteAsync("t", "c", _userId);
+            await _service.ChangeColorAsync(note.Id, "");
+        });
+    }
 }
