@@ -54,4 +54,14 @@ public class NoteServiceTests
         Assert.That(result.Pinned, Is.True);
     }
 
+    [Test]
+    public async Task ArchiveNote_Should_SetIsArchivedTrue()
+    {
+        var note = await _service.CreateNoteAsync("A", "B", _userId);
+        await _service.ArchiveNoteAsync(note.Id);
+
+        var result = await _service.GetNoteByIdAsync(note.Id);
+        Assert.That(result.IsArchived, Is.True);
+    }
+
 }
