@@ -93,4 +93,11 @@ public class NoteServiceTests
         var all = await _repository.GetAllAsync(_userId);
         Assert.That(all.Any(), Is.False);
     }
+
+    [Test]
+    public void CreateNote_Should_Throw_When_TitleEmpty()
+    {
+        Assert.ThrowsAsync<ArgumentException>(async () =>
+            await _service.CreateNoteAsync("", "content", _userId));
+    }
 }
