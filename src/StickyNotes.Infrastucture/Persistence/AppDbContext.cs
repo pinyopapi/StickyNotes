@@ -7,7 +7,7 @@ namespace StickyNotes.Infrastructure.Persistence
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<Note> Notes { get; set; }
+        public DbSet<Note> Notes => Set<Note>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -16,6 +16,7 @@ namespace StickyNotes.Infrastructure.Persistence
             modelBuilder.Entity<Note>(entity =>
             {
                 entity.HasKey(n => n.Id);
+
                 entity.Property(n => n.Title)
                       .IsRequired()
                       .HasMaxLength(200);
@@ -28,9 +29,15 @@ namespace StickyNotes.Infrastructure.Persistence
 
                 entity.Property(n => n.Tags)
                       .HasConversion(
-                          v => string.Join(',', v),
+                          v => string.Join(',', v ?? new List<string>()),
                           v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()
                       );
+
+                entity.Property(n => n.CreatedAt)
+                      .IsRequired();
+
+                entity.Property(n => n.UpdatedAt)
+                      .IsRequired(false);
             });
         }
     }
