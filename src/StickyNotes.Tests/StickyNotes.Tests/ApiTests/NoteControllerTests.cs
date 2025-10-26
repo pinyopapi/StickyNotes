@@ -61,7 +61,54 @@ namespace StickyNotes.Tests.ApiTests
             Assert.That(allNotes.Any(n => n.Id == note.Id), Is.False);
         }
 
+        [Test]
+        public async Task Pin_ShouldSetNoteAsPinned()
+        {
+            var note = await _service.CreateNoteAsync("Note", "Text", _userId);
 
+            await _controller.Pin(note.Id);
 
+            var updated = await _service.GetNoteByIdAsync(note.Id);
+            Assert.That(updated.Pinned, Is.True);
+        }
+
+        [Test]
+        public async Task Unpin_ShouldSetNoteAsUnpinned()
+        {
+            var note = await _service.CreateNoteAsync("Note", "Text", _userId);
+            await _controller.Pin(note.Id);
+
+            await _controller.Unpin(note.Id);
+
+            var updated = await _service.GetNoteByIdAsync(note.Id);
+            Assert.That(updated.Pinned, Is.False);
+        }
+
+        [Test]
+        public async Task Archive_ShouldSetNoteAsArchived()
+        {
+            var note = await _service.CreateNoteAsync("Test", "Archivable", _userId);
+
+            await _controller.Archive(note.Id);
+
+            var updated = await _service.GetNoteByIdAsync(note.Id);
+            Assert.Multiple(() =>
+            {
+                Assert.That(updated.IsArchived, Is.True);
+                Assert.That(updated.Pinned, Is.False);
+            });
+        }
+
+        [Test]
+        public async Task Restore_ShouldUnarchiveNote()
+        {
+            var note = await _service.CreateNoteAsync("Test", "ToRestore", _userId);
+            await _controller.Archive(note.Id);
+
+            await _controller.Restore(note.Id);
+
+            var updated = await _service.GetNoteByIdAsync(note.Id);
+            Assert.That(updated.IsArchived, Is.False);
+        }
     }
 }
