@@ -7,7 +7,7 @@ const NoteList = ({ userId }) => {
 
     const fetchNotes = async () => {
         try {
-            const data = await getAllNotes(userId);
+            const response = await getAllNotes(userId);
             setNotes(response.data);
         } catch (error) {
             console.error('Failed to fetch notes:', error);
