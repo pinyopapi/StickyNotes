@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://localhost:5001/api/note';
+const API_URL = 'https://localhost:7194/api/note';
 
 export const getAllNotes = (userId) => {
     return axios.get(API_URL, { params: { userId } });
