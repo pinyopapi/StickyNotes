@@ -49,5 +49,19 @@ namespace StickyNotes.Tests.ApiTests
                 Assert.That(note.Content, Is.EqualTo("New Content"));
             });
         }
+
+        [Test]
+        public async Task Delete_ShouldRemoveNote()
+        {
+            var note = await _service.CreateNoteAsync("Title", "Content", _userId);
+
+            await _controller.Delete(note.Id);
+
+            var allNotes = await _service.GetAllNotesAsync(_userId);
+            Assert.That(allNotes.Any(n => n.Id == note.Id), Is.False);
+        }
+
+
+
     }
 }
