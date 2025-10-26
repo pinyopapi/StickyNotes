@@ -1,4 +1,6 @@
-﻿using StickyNotes.Api.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
+using StickyNotes.Api.Controllers;
+using StickyNotes.Domain.Entities;
 
 namespace StickyNotes.Tests.ApiTests
 {
@@ -149,6 +151,31 @@ namespace StickyNotes.Tests.ApiTests
 
             var updated = await _service.GetNoteByIdAsync(note.Id);
             Assert.That(updated.Tags, Does.Contain("important"));
+        }
+
+        [Test]
+        public async Task RemoveTag_ShouldRemoveTagFromNote()
+        {
+            var note = await _service.CreateNoteAsync("Tagged", "Note", _userId);
+            note.AddTag("todo");
+            var request = new TagRequest("todo");
+
+            await _controller.RemoveTag(note.Id, request);
+
+            var updated = await _service.GetNoteByIdAsync(note.Id);
+            Assert.That(updated.Tags, Does.Not.Contain("todo"));
+        }
+
+        [Test]
+        public async Task GetById_ShouldReturnNote_WhenExists()
+        {
+            var note = await _service.CreateNoteAsync("Title", "Content", _userId);
+
+            var result = await _controller.GetById(note.Id) as OkObjectResult;
+
+            Assert.That(result, Is.Not.Null);
+            var returnedNote = result.Value as Note;
+            Assert.That(returnedNote?.Id, Is.EqualTo(note.Id));
         }
     }
 }
