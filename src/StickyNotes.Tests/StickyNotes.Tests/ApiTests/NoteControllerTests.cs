@@ -155,6 +155,17 @@ namespace StickyNotes.Tests.ApiTests
         }
 
         [Test]
+        public void AddTag_ShouldNotAddTag_WhenTagIsEmptyOrWhitespace()
+        {
+            var note = new Note("Title", "Content", Guid.NewGuid());
+
+            note.AddTag("");
+            note.AddTag("   ");
+
+            Assert.That(note.Tags, Is.Empty);
+        }
+
+        [Test]
         public async Task RemoveTag_ShouldRemoveTagFromNote()
         {
             var note = await _service.CreateNoteAsync("Tagged", "Note", _userId);
