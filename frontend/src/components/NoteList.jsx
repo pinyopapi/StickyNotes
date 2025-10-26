@@ -26,8 +26,15 @@ const NoteList = ({ userId }) => {
         fetchNotes();
     }, [userId]);
 
-    const handleFilter = (filterFunc) => {
-        setFilteredNotes(notes.filter(filterFunc));
+    const handleFilter = (filterBy, value) => {
+        const filtered = notes.filter(note => {
+            if (filterBy === 'tag') {
+                return value.every(tag => note.tags.includes(tag));
+            } else {
+                return note[filterBy].toLowerCase().includes(value.toLowerCase());
+            }
+        });
+        setFilteredNotes(filtered);
     };
 
     return (
