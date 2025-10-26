@@ -138,5 +138,17 @@ namespace StickyNotes.Tests.ApiTests
                 Assert.That(updated.PositionY, Is.EqualTo(88.1f));
             });
         }
+
+        [Test]
+        public async Task AddTag_ShouldAddTagToNote()
+        {
+            var note = await _service.CreateNoteAsync("Tagged", "Note", _userId);
+            var request = new TagRequest("important");
+
+            await _controller.AddTag(note.Id, request);
+
+            var updated = await _service.GetNoteByIdAsync(note.Id);
+            Assert.That(updated.Tags, Does.Contain("important"));
+        }
     }
 }
