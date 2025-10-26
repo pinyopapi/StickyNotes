@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace StickyNotes.Domain.Entities
@@ -26,6 +27,7 @@ namespace StickyNotes.Domain.Entities
             UserId = userId;
         }
 
+        [ExcludeFromCodeCoverage]
         private Note() { }
 
         public void Update(string title, string content)
