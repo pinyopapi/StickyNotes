@@ -33,5 +33,21 @@ namespace StickyNotes.Tests.ApiTests
             var response = await _controller.GetAll(_userId);
             Assert.That(response, Is.Not.Null);
         }
+
+        [Test]
+        public async Task Update_ShouldReturnUpdatedNote()
+        {
+            var note = await _service.CreateNoteAsync("Old Title", "Old Content", _userId);
+            var request = new UpdateNoteRequest("New Title", "New Content");
+
+            var result = await _controller.Update(note.Id, request);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.Not.Null);
+                Assert.That(note.Title, Is.EqualTo("New Title"));
+                Assert.That(note.Content, Is.EqualTo("New Content"));
+            });
+        }
     }
 }
