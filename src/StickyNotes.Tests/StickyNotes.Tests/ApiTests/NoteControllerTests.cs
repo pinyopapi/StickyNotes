@@ -188,5 +188,15 @@ namespace StickyNotes.Tests.ApiTests
             Assert.That(result, Is.Not.Null);
             Assert.That(result.StatusCode, Is.EqualTo(404));
         }
+
+        [Test]
+        public async Task GetById_ShouldReturnBadRequest_WhenIdIsEmpty()
+        {
+            var emptyId = Guid.Empty;
+
+            var result = await _controller.GetById(emptyId);
+
+            Assert.That(result, Is.TypeOf<BadRequestObjectResult>());
+        }
     }
 }
