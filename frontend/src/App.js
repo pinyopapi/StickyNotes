@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import NoteForm from './components/NoteForm';
 import NoteList from './components/NoteList';
 
 function App() {
-  const [userId] = useState('11111111-1111-1111-1111-111111111111');
+  const userId = "00000000-0000-0000-0000-000000000001"; 
+  const [refreshKey, setRefreshKey] = useState(0); 
+
+  const handleNoteCreated = () => {
+    setRefreshKey(prev => prev + 1);
+  };
 
   return (
     <div className="container mt-4">
       <h1>Sticky Notes</h1>
-      <NoteList userId={userId} />
+      <NoteForm userId={userId} onCreated={handleNoteCreated} />
+      <NoteList key={refreshKey} userId={userId} />
     </div>
   );
 }
