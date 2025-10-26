@@ -241,6 +241,13 @@ namespace StickyNotes.Tests.ApiTests
             Assert.That(ex.ParamName, Is.EqualTo("repository"));
         }
 
+        [Test]
+        public void Constructor_ShouldSetContentToEmptyString_WhenContentIsNull()
+        {
+            var note = new Note("Title", null, Guid.NewGuid());
+
+            Assert.That(note.Content, Is.EqualTo(string.Empty));
+        }
 
     }
 }
