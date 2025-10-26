@@ -26,5 +26,12 @@ namespace StickyNotes.Tests.ApiTests
             Assert.That(result, Is.Not.Null);
         }
 
+        [Test]
+        public async Task GetAll_ShouldReturnNotes()
+        {
+            await _service.CreateNoteAsync("T", "C", _userId);
+            var response = await _controller.GetAll(_userId);
+            Assert.That(response, Is.Not.Null);
+        }
     }
 }
