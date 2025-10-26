@@ -54,5 +54,22 @@ namespace StickyNotes.Tests.InfrastructureTests
             Assert.That(notes.Count(), Is.EqualTo(2));
         }
 
+        [Test]
+        public async Task UpdateAsync_ShouldPersistChanges()
+        {
+            var note = new Note("Old", "OldContent", _userId);
+            await _repository.AddAsync(note);
+
+            note.Update("New", "NewContent");
+            await _repository.UpdateAsync(note);
+
+            var updated = await _repository.GetByIdAsync(note.Id);
+            Assert.Multiple(() =>
+            {
+                Assert.That(updated?.Title, Is.EqualTo("New"));
+                Assert.That(updated?.Content, Is.EqualTo("NewContent"));
+            });
+        }
+
     }
 }
