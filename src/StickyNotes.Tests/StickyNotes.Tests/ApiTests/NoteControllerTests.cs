@@ -122,5 +122,21 @@ namespace StickyNotes.Tests.ApiTests
             var updated = await _service.GetNoteByIdAsync(note.Id);
             Assert.That(updated.Color, Is.EqualTo("#FF5733"));
         }
+
+        [Test]
+        public async Task SetPosition_ShouldUpdateCoordinates()
+        {
+            var note = await _service.CreateNoteAsync("MoveMe", "Note", _userId);
+            var request = new PositionRequest(42.5f, 88.1f);
+
+            await _controller.SetPosition(note.Id, request);
+
+            var updated = await _service.GetNoteByIdAsync(note.Id);
+            Assert.Multiple(() =>
+            {
+                Assert.That(updated.PositionX, Is.EqualTo(42.5f));
+                Assert.That(updated.PositionY, Is.EqualTo(88.1f));
+            });
+        }
     }
 }
