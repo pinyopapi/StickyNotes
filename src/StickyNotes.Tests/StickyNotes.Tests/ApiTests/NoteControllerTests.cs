@@ -177,5 +177,16 @@ namespace StickyNotes.Tests.ApiTests
             var returnedNote = result.Value as Note;
             Assert.That(returnedNote?.Id, Is.EqualTo(note.Id));
         }
+
+        [Test]
+        public async Task GetById_ShouldReturnNotFound_WhenNoteDoesNotExist()
+        {
+            var invalidId = Guid.NewGuid();
+
+            var result = await _controller.GetById(invalidId) as NotFoundObjectResult;
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.StatusCode, Is.EqualTo(404));
+        }
     }
 }
