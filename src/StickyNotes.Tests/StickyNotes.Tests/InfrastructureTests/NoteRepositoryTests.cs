@@ -71,5 +71,16 @@ namespace StickyNotes.Tests.InfrastructureTests
             });
         }
 
+        [Test]
+        public async Task DeleteAsync_ShouldRemoveNote()
+        {
+            var note = new Note("T", "C", _userId);
+            await _repository.AddAsync(note);
+
+            await _repository.DeleteAsync(note.Id);
+
+            var deleted = await _repository.GetByIdAsync(note.Id);
+            Assert.That(deleted, Is.Null);
+        }
     }
 }
