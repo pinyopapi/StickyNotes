@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StickyNotes.Api.Controllers;
+using StickyNotes.Application.Services;
 using StickyNotes.Domain.Entities;
 
 namespace StickyNotes.Tests.ApiTests
@@ -198,5 +199,17 @@ namespace StickyNotes.Tests.ApiTests
 
             Assert.That(result, Is.TypeOf<BadRequestObjectResult>());
         }
+
+        [Test]
+        public async Task Create_ShouldReturnBadRequest_WhenModelStateIsInvalid()
+        {
+            _controller.ModelState.AddModelError("Title", "Required");
+            var request = new CreateNoteRequest("", "Content", _userId);
+
+            var result = await _controller.Create(request);
+
+            Assert.That(result, Is.TypeOf<BadRequestObjectResult>());
+        }
+
     }
 }
