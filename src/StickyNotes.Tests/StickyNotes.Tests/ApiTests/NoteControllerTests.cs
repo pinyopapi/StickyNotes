@@ -211,5 +211,11 @@ namespace StickyNotes.Tests.ApiTests
             Assert.That(result, Is.TypeOf<BadRequestObjectResult>());
         }
 
+        [Test]
+        public void Constructor_ShouldThrowArgumentNullException_WhenRepositoryIsNull()
+        {
+            var ex = Assert.Throws<ArgumentNullException>(() => new NoteService(null));
+            Assert.That(ex.ParamName, Is.EqualTo("repository"));
+        }
     }
 }
