@@ -1,0 +1,22 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sticky-backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/src/StickyNotes.Api/stickyNotes.db:/app/stickyNotes.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sticky-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
