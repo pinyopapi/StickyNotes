@@ -9,7 +9,7 @@ namespace StickyNotes.Tests.ApiTests
     [TestFixture]
     public class NotesControllerTests
     {
-        private NotesController _controller;
+        private NoteController _controller;
         private FakeNoteService _service;
         private Guid _userId;
 
@@ -17,7 +17,7 @@ namespace StickyNotes.Tests.ApiTests
         public void Setup()
         {
             _service = new FakeNoteService();
-            _controller = new NotesController(_service);
+            _controller = new NoteController(_service);
             _userId = Guid.NewGuid();
         }
 
