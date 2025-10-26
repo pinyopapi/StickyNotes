@@ -82,5 +82,13 @@ namespace StickyNotes.Tests.InfrastructureTests
             var deleted = await _repository.GetByIdAsync(note.Id);
             Assert.That(deleted, Is.Null);
         }
+
+        [Test]
+        public async Task DeleteAsync_ShouldNotThrow_WhenNoteDoesNotExist()
+        {
+            var invalidId = Guid.NewGuid();
+
+            Assert.DoesNotThrowAsync(async () => await _repository.DeleteAsync(invalidId));
+        }
     }
 }
