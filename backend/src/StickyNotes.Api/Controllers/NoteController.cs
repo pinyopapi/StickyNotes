@@ -7,11 +7,11 @@ namespace StickyNotes.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class NotesController : ControllerBase
+    public class NoteController : ControllerBase
     {
         private readonly INoteService _noteService;
 
-        public NotesController(INoteService noteService)
+        public NoteController(INoteService noteService)
         {
             _noteService = noteService;
         }
