@@ -110,5 +110,17 @@ namespace StickyNotes.Tests.ApiTests
             var updated = await _service.GetNoteByIdAsync(note.Id);
             Assert.That(updated.IsArchived, Is.False);
         }
+
+        [Test]
+        public async Task ChangeColor_ShouldUpdateNoteColor()
+        {
+            var note = await _service.CreateNoteAsync("Colored", "Note", _userId);
+            var request = new ChangeColorRequest("#FF5733");
+
+            await _controller.ChangeColor(note.Id, request);
+
+            var updated = await _service.GetNoteByIdAsync(note.Id);
+            Assert.That(updated.Color, Is.EqualTo("#FF5733"));
+        }
     }
 }
