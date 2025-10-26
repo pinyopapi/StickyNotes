@@ -176,4 +176,17 @@ public class NoteServiceTests
             Assert.That(result.Count(), Is.EqualTo(1));
         });
     }
+
+    [Test]
+    public async Task UnpinNoteAsync_ShouldSetPinnedFalseAndUpdate()
+    {
+        var note = await _service.CreateNoteAsync("Title", "Content", _userId);
+        await _service.PinNoteAsync(note.Id);
+
+        await _service.UnpinNoteAsync(note.Id);
+
+        var updated = await _service.GetNoteByIdAsync(note.Id);
+        Assert.That(updated.Pinned, Is.False);
+    }
+
 }
