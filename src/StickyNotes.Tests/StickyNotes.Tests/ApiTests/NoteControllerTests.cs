@@ -166,6 +166,18 @@ namespace StickyNotes.Tests.ApiTests
         }
 
         [Test]
+        public void AddTag_ShouldNotAddDuplicateTag()
+        {
+            var note = new Note("Title", "Content", Guid.NewGuid());
+            note.AddTag("Tag1");
+
+            note.AddTag("Tag1");
+
+            Assert.That(note.Tags, Has.Count.EqualTo(1));
+        }
+
+
+        [Test]
         public async Task RemoveTag_ShouldRemoveTagFromNote()
         {
             var note = await _service.CreateNoteAsync("Tagged", "Note", _userId);
@@ -228,5 +240,7 @@ namespace StickyNotes.Tests.ApiTests
             var ex = Assert.Throws<ArgumentNullException>(() => new NoteService(null));
             Assert.That(ex.ParamName, Is.EqualTo("repository"));
         }
+
+
     }
 }
