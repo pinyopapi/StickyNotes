@@ -10,7 +10,7 @@ const NoteFilter = ({ allTags, onFilter }) => {
             ? selectedTags.filter(t => t !== tag)
             : [...selectedTags, tag];
         setSelectedTags(newTags);
-        onFilter(filterBy, newTags);
+        onFilter('tag', newTags); 
     };
 
     const handleTextChange = (e) => {
@@ -19,18 +19,21 @@ const NoteFilter = ({ allTags, onFilter }) => {
         onFilter(filterBy, text);
     };
 
+    const handleFilterByChange = (e) => {
+        const newFilter = e.target.value;
+        setFilterBy(newFilter);
+        setFilterText('');
+        setSelectedTags([]);
+        onFilter(newFilter, newFilter === 'tag' ? [] : ''); 
+    };
+
     return (
-        <div className="card p-3 mb-3" >
+        <div className="card p-3 mb-3" style={{ position: 'sticky', top: '1rem', zIndex: 100 }}>
             <h5>Filter Notes</h5>
             <select
-                className="form-select"
+                className="form-select mb-2"
                 value={filterBy}
-                onChange={e => {
-                    setFilterBy(e.target.value);
-                    setFilterText('');
-                    setSelectedTags([]);
-                    onFilter(e.target.value, '');
-                }}
+                onChange={handleFilterByChange}
             >
                 <option value="title">Title</option>
                 <option value="content">Content</option>
