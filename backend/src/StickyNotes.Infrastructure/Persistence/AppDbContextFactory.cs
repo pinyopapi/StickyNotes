@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using System.Diagnostics.CodeAnalysis;
 
-namespace StickyNotes.Infrastructure.Persistence
+namespace StickyNotes.Infrastructure.Persistence;
+[ExcludeFromCodeCoverage]
+public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
-    public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+    public AppDbContext CreateDbContext(string[] args)
     {
-        public AppDbContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlite("Data Source=stickyNotes.db");
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        optionsBuilder.UseSqlite("Data Source=stickyNotes.db");
 
-            return new AppDbContext(optionsBuilder.Options);
-        }
+        return new AppDbContext(optionsBuilder.Options);
     }
 }
