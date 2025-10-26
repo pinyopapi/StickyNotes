@@ -26,6 +26,9 @@ namespace StickyNotes.Api.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id)
         {
+            if (id == Guid.Empty)
+                return BadRequest(new { message = "Invalid note ID" });
+
             try
             {
                 var note = await _noteService.GetNoteByIdAsync(id);
