@@ -13,6 +13,14 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowReactApp",
+                policy => policy.WithOrigins("http://localhost:3000")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod());
+        });
+
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -32,6 +40,7 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseCors("AllowReactApp");
         app.UseAuthorization();
         app.MapControllers();
         app.Run();
