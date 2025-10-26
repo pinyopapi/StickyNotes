@@ -1,12 +1,17 @@
-import { useEffect, useState } from 'react';
-import { getAllNotes } from '../services/noteService';
+import React, { useEffect, useState } from 'react';
 import NoteCard from './NoteCard';
+import { getAllNotes } from '../services/noteService';
 
 const NoteList = ({ userId }) => {
     const [notes, setNotes] = useState([]);
 
-    const fetchNotes = () => {
-        getAllNotes(userId).then(res => setNotes(res.data));
+    const fetchNotes = async () => {
+        try {
+            const data = await getAllNotes(userId);
+            setNotes(response.data);
+        } catch (error) {
+            console.error('Failed to fetch notes:', error);
+        }
     };
 
     useEffect(() => {
@@ -15,9 +20,13 @@ const NoteList = ({ userId }) => {
 
     return (
         <div className="d-flex flex-wrap">
-            {notes.map(note => (
-                <NoteCard key={note.id} note={note} onUpdate={fetchNotes} />
-            ))}
+            {notes.length === 0 ? (
+                <p>No notes available</p>
+            ) : (
+                notes.map(note => (
+                    <NoteCard key={note.id} note={note} onUpdate={fetchNotes} />
+                ))
+            )}
         </div>
     );
 };
