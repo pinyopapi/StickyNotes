@@ -43,5 +43,16 @@ namespace StickyNotes.Tests.InfrastructureTests
             Assert.That(savedNote.Title, Is.EqualTo("Title"));
         }
 
+        [Test]
+        public async Task GetAllAsync_ShouldReturnAllNotesForUser()
+        {
+            await _repository.AddAsync(new Note("N1", "C1", _userId));
+            await _repository.AddAsync(new Note("N2", "C2", _userId));
+
+            var notes = await _repository.GetAllAsync(_userId);
+
+            Assert.That(notes.Count(), Is.EqualTo(2));
+        }
+
     }
 }
