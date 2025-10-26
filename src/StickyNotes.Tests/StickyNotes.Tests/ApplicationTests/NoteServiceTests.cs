@@ -200,4 +200,21 @@ public class NoteServiceTests
         var updated = await _service.GetNoteByIdAsync(note.Id);
         Assert.That(updated.IsArchived, Is.False);
     }
+
+    [Test]
+    public async Task SetPositionAsync_ShouldUpdatePositionAndUpdatedAt()
+    {
+        var note = await _service.CreateNoteAsync("Title", "Content", _userId);
+        float newX = 100f;
+        float newY = 200f;
+
+        await _service.SetPositionAsync(note.Id, newX, newY);
+
+        var updated = await _service.GetNoteByIdAsync(note.Id);
+        Assert.Multiple(() =>
+        {
+            Assert.That(updated.PositionX, Is.EqualTo(newX));
+            Assert.That(updated.PositionY, Is.EqualTo(newY));
+        });
+    }
 }
