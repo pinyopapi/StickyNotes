@@ -30,12 +30,25 @@ Sticky Notes is a web app to manage personal notes efficiently. Users can create
 
 ---
 
-## 🛠️ Built With / Tech Stack
+## 🛠️ Built With / Tech Stack  
 
-- **Frontend:** React, Bootstrap 5, Axios  
-- **Backend:** ASP.NET 8 Web API (C#)  
-- **Database:** SQLite (dockerized or local file)  
-- **Containerization:** Docker  
+### 🧩 Frontend  
+[![React](https://img.shields.io/badge/React-18-blue?logo=react&logoColor=white)](https://react.dev/)  
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?logo=bootstrap&logoColor=white)](https://getbootstrap.com/)  
+[![Axios](https://img.shields.io/badge/Axios-HTTP_client-5A29E4?logo=axios&logoColor=white)](https://axios-http.com/)  
+
+---
+
+### ⚙️ Backend  
+[![ASP.NET](https://img.shields.io/badge/ASP.NET_8-Web_API-512BD4?logo=.net&logoColor=white)](https://dotnet.microsoft.com/en-us/apps/aspnet)  
+[![C#](https://img.shields.io/badge/C%23-language-239120?logo=csharp&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/csharp/)  
+
+---
+
+### 🗄️ Database  
+[![SQLite](https://img.shields.io/badge/SQLite-database-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)  
+[![Docker](https://img.shields.io/badge/Docker-containerization-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)  
+
 
 ---
 
