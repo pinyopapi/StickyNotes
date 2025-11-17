@@ -7,10 +7,16 @@ const NoteForm = ({ userId, onCreated }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const res = await createNote(title, content, userId);
-        onCreated(res.data);
-        setTitle('');
-        setContent('');
+        
+        try {
+            const res = await createNote(title, content, userId);
+            onCreated(res.data);
+            setTitle('');
+            setContent('');
+        } catch (err) {
+            console.error(err);
+            alert("Failed to create note.");
+        }
     };
 
     return (
