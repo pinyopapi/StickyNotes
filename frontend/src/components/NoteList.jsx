@@ -18,6 +18,7 @@ const NoteList = ({ userId }) => {
             setAllTags(tags);
         } catch (error) {
             console.error('Failed to fetch notes:', error);
+            alert("Failed to load notes from the server.");
         }
     };
 
