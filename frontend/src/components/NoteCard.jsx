@@ -68,8 +68,13 @@ const NoteCard = ({ note, onUpdate }) => {
     };
 
     const handleRemoveTag = async (tag) => {
-        await removeTag(note.id, tag);
-        onUpdate();
+        try {
+            await removeTag(note.id, tag);
+            onUpdate();
+        } catch (err) {
+            console.error(err);
+            alert("Failed to remove tag.");
+        }
     };
 
     return (
