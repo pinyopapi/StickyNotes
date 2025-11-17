@@ -22,9 +22,14 @@ const NoteCard = ({ note, onUpdate }) => {
     };
     
     const handleArchiveToggle = async () => {
-        if (note.isArchived) await restoreNote(note.id);
-        else await archiveNote(note.id);
-        onUpdate();
+        try {
+            if (note.isArchived) await restoreNote(note.id);
+            else await archiveNote(note.id);
+            onUpdate();
+        } catch (error) {
+            console.error(err);
+            alert("Failed to update archive state.");
+        }
     };
 
     const handleDelete = async () => {
