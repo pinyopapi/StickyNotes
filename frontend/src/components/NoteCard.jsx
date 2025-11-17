@@ -20,7 +20,7 @@ const NoteCard = ({ note, onUpdate }) => {
             alert("Failed to update pin state.");
         }
     };
-    
+
     const handleArchiveToggle = async () => {
         try {
             if (note.isArchived) await restoreNote(note.id);
@@ -33,13 +33,13 @@ const NoteCard = ({ note, onUpdate }) => {
     };
 
     const handleDelete = async () => {
-        if (window.confirm('Are you sure you want to delete this note?')) {
-            try {
-                await deleteNote(note.id);
-                onUpdate();
-            } catch (err) {
-                console.error(err);
-            }
+        if (!window.confirm('Are you sure you want to delete this note?')) return;
+        try {
+            await deleteNote(note.id);
+            onUpdate();
+        } catch (err) {
+            console.error(err);
+            alert("Failed to delete the note.");
         }
     };
 
@@ -50,6 +50,7 @@ const NoteCard = ({ note, onUpdate }) => {
             await changeColor(note.id, newColor);
         } catch (err) {
             console.error(err);
+            alert("Failed to change note color.");
         }
     };
 
