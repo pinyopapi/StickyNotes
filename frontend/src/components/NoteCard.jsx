@@ -2,136 +2,124 @@ import { useState } from 'react';
 import { useNoteActions } from '../hooks/useNoteActions';
 
 const NoteCard = ({ note, onUpdate }) => {
-    const [color, setColor] = useState(note.color);
-    const [newTag, setNewTag] = useState('');
-    const [openMenu, setOpenMenu] = useState(false);
-    const {
-        togglePin,
-        toggleArchive,
-        deleteNoteById,
-        changeColor,
-        addTagToNote,
-        removeTagFromNote
-    } = useNoteActions(onUpdate);
+  const [color, setColor] = useState(note.color);
+  const [newTag, setNewTag] = useState('');
+  const [openMenu, setOpenMenu] = useState(false);
 
-     const handleColorChange = async (e) => {
-        const newColor = e.target.value;
-        setColor(newColor);
+  const {
+    togglePin,
+    toggleArchive,
+    deleteNoteById,
+    changeColor,
+    addTag,
+    removeTag
+  } = useNoteActions(onUpdate);
 
-        try {
-            await changeColor(note.id, newColor);
-        } catch (err) {
-            console.error(err);
-            alert("Failed to change note color.");
-        }
-    };
+  const handleColorChange = (e) => {
+    const newColor = e.target.value;
+    setColor(newColor);
+    changeColor(note.id, newColor);
+  };
 
-    const handleAddTag = async () => {
-        if (!newTag.trim()) return;
+  const handleAddTag = () => {
+    if (!newTag.trim()) return;
+    addTag(note.id, newTag);
+    setNewTag('');
+  };
 
-        try {
-            await addTag(note.id, newTag);
-            setNewTag('');
-            onUpdate();
-        } catch (err) {
-            console.error(err);
-            alert("Failed to add tag.");
-        }
-    };
+  return (
+    <div
+      className={`card m-2 p-3 ${note.isArchived ? 'bg-light text-muted' : ''}`}
+      style={{
+        backgroundColor: color,
+        width: '250px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.5rem'
+      }}
+    >
+      <h5 className="card-title d-flex justify-content-between align-items-center">
+        {note.title}
+        <span>
+          {note.pinned && '📌 '}
+          {note.isArchived && '🗄️'}
+        </span>
+      </h5>
 
-    return (
-        <div
-            className={`card m-2 p-3 ${note.isArchived ? 'bg-light text-muted' : ''}`}
-            style={{
-                backgroundColor: color,
-                width: '250px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.5rem'
-            }}
-        >
-            <h5 className="card-title d-flex justify-content-between align-items-center">
-                {note.title}
-                <span>
-                    {note.pinned && '📌 '}
-                    {note.isArchived && '🗄️'}
-                </span>
-            </h5>
+      <p className="card-text">{note.content}</p>
 
-            <p className="card-text">{note.content}</p>
-
-            <div className="mt-2">
-                {note.tags.map(tag => (
-                    <span key={tag} className="badge bg-secondary me-1 mb-1">
-                        {tag}
-                        <button
-                            className="btn-close btn-close-white btn-sm ms-1"
-                            onClick={() => removeTagFromNote(note.id, tag)}
-                        ></button>
-                    </span>
-                ))}
-            </div>
-
-            {openMenu && (
-                <div className="mt-2 pt-2 border-top d-flex flex-column gap-2">
-
-                    <div>
-                        <span className="me-1">Color</span>
-                        <input
-                            type="color"
-                            value={color}
-                            onChange={handleColorChange}
-                            className="form-control form-control-color mb-1"
-                        />
-                    </div>
-
-                    <button
-                        className="btn btn-sm btn-outline-primary"
-                        onClick={() => togglePin(note)}
-                    >
-                        {note.pinned ? 'Unpin' : 'Pin'}
-                    </button>
-
-                    <button
-                        className="btn btn-sm btn-outline-secondary"
-                        onClick={() => toggleArchive(note)}
-                    >
-                        {note.isArchived ? 'Restore' : 'Archive'}
-                    </button>
-
-                    <button
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={() => deleteNoteById(note.id)}
-                    >
-                        Delete
-                    </button>
-
-                    <div className="d-flex gap-1">
-                        <input
-                            type="text"
-                            value={newTag}
-                            onChange={(e) => setNewTag(e.target.value)}
-                            placeholder="Add tag"
-                            className="form-control form-control-sm"
-                        />
-                        <button
-                            className="btn btn-sm btn-primary"
-                            onClick={handleAddTag}
-                        >
-                            Add
-                        </button>
-                    </div>
-                </div>
-            )}
-
+      <div className="mt-2">
+        {note.tags.map(tag => (
+          <span key={tag} className="badge bg-secondary me-1 mb-1">
+            {tag}
             <button
-                className="btn btn-sm btn-secondary mt-auto"
-                onClick={() => setOpenMenu(!openMenu)}
+              className="btn-close btn-close-white btn-sm ms-1"
+              onClick={() => removeTag(note.id, tag)}
+            ></button>
+          </span>
+        ))}
+      </div>
+
+      {openMenu && (
+        <div className="mt-2 pt-2 border-top d-flex flex-column gap-2">
+
+          <div>
+            <span className="me-1">Color</span>
+            <input
+              type="color"
+              value={color}
+              onChange={handleColorChange}
+              className="form-control form-control-color mb-1"
+            />
+          </div>
+
+          <button
+            className="btn btn-sm btn-outline-primary"
+            onClick={() => togglePin(note)}
+          >
+            {note.pinned ? 'Unpin' : 'Pin'}
+          </button>
+
+          <button
+            className="btn btn-sm btn-outline-secondary"
+            onClick={() => toggleArchive(note)}
+          >
+            {note.isArchived ? 'Restore' : 'Archive'}
+          </button>
+
+          <button
+            className="btn btn-sm btn-outline-danger"
+            onClick={() => deleteNoteById(note.id)}
+          >
+            Delete
+          </button>
+
+          <div className="d-flex gap-1">
+            <input
+              type="text"
+              value={newTag}
+              onChange={(e) => setNewTag(e.target.value)}
+              placeholder="Add tag"
+              className="form-control form-control-sm"
+            />
+            <button
+              className="btn btn-sm btn-primary"
+              onClick={handleAddTag}
             >
-                Settings
+              Add
             </button>
+          </div>
         </div>
-    );
+      )}
+
+      <button
+        className="btn btn-sm btn-secondary mt-auto"
+        onClick={() => setOpenMenu(!openMenu)}
+      >
+        Settings
+      </button>
+    </div>
+  );
 };
 
 export default NoteCard;

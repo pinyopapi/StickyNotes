@@ -1,3 +1,14 @@
+import {
+  pinNote,
+  unpinNote,
+  archiveNote,
+  restoreNote,
+  changeColor as apiChangeColor,
+  addTag as apiAddTag,
+  removeTag as apiRemoveTag,
+  deleteNote as apiDeleteNote
+} from '../services/noteService';
+
 export const useNoteActions = (onUpdate) => {
   const safe = async (fn, message) => {
     try {
@@ -11,13 +22,13 @@ export const useNoteActions = (onUpdate) => {
 
   return {
     changeColor: (id, color) =>
-      safe(() => changeColor(id, color), "Failed to change note color."),
+      safe(() => apiChangeColor(id, color), "Failed to change note color."),
 
     addTag: (id, tag) =>
-      safe(() => addTag(id, tag), "Failed to add tag."),
+      safe(() => apiAddTag(id, tag), "Failed to add tag."),
 
     removeTag: (id, tag) =>
-      safe(() => removeTag(id, tag), "Failed to remove tag."),
+      safe(() => apiRemoveTag(id, tag), "Failed to remove tag."),
 
     togglePin: (note) =>
       safe(() => (note.pinned ? unpinNote(note.id) : pinNote(note.id)), "Failed to update pin state."),
@@ -26,6 +37,6 @@ export const useNoteActions = (onUpdate) => {
       safe(() => (note.isArchived ? restoreNote(note.id) : archiveNote(note.id)), "Failed to update archive state."),
 
     deleteNoteById: (id) =>
-      safe(() => deleteNote(id), "Failed to delete note.")
+      safe(() => apiDeleteNote(id), "Failed to delete note.")
   };
 };
