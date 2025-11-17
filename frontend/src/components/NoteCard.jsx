@@ -56,9 +56,15 @@ const NoteCard = ({ note, onUpdate }) => {
 
     const handleAddTag = async () => {
         if (!newTag.trim()) return;
-        await addTag(note.id, newTag);
-        setNewTag('');
-        onUpdate();
+
+        try {
+            await addTag(note.id, newTag);
+            setNewTag('');
+            onUpdate();
+        } catch (err) {
+            console.error(err);
+            alert("Failed to add tag.");
+        }
     };
 
     const handleRemoveTag = async (tag) => {
