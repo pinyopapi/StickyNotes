@@ -10,11 +10,17 @@ const NoteCard = ({ note, onUpdate }) => {
     const [openMenu, setOpenMenu] = useState(false);
 
     const handlePinToggle = async () => {
-        if (note.pinned) await unpinNote(note.id);
-        else await pinNote(note.id);
-        onUpdate();
-    };
+        try {
+            if (note.pinned) await unpinNote(note.id);
+            else await pinNote(note.id);
 
+            onUpdate();
+        } catch (err) {
+            console.error(err);
+            alert("Failed to update pin state.");
+        }
+    };
+    
     const handleArchiveToggle = async () => {
         if (note.isArchived) await restoreNote(note.id);
         else await archiveNote(note.id);
