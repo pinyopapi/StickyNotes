@@ -9,14 +9,23 @@ services:
     volumes:
       - ./backend/src/StickyNotes.Api/stickyNotes.db:/app/stickyNotes.db
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-
-  frontend:
+      ASPNETCORE_ENVIRONMENT: Development
+    networks:
+      - sticky-net
+frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: "http://backend:8080"
     container_name: sticky-frontend
     ports:
       - "3000:80"
     depends_on:
       - backend
+    networks:
+      - sticky-net
+
+networks:
+  sticky-net:
+    driver: bridge
