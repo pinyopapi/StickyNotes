@@ -1,68 +1,66 @@
 import { useState } from 'react';
 
 const NoteFilter = ({ allTags, onFilter }) => {
-    const [filterBy, setFilterBy] = useState('title');
-    const [filterText, setFilterText] = useState('');
-    const [selectedTags, setSelectedTags] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [selectedTags, setSelectedTags] = useState([]);
 
-    const toggleTag = (tag) => {
-        const newTags = selectedTags.includes(tag)
-            ? selectedTags.filter(t => t !== tag)
-            : [...selectedTags, tag];
-        setSelectedTags(newTags);
-        onFilter('tag', newTags); 
-    };
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchText(value);
+    onFilter('title', value);
+  };
 
-    const handleTextChange = (e) => {
-        const text = e.target.value;
-        setFilterText(text);
-        onFilter(filterBy, text);
-    };
+  const toggleTag = (tag) => {
+    let updated;
 
-    const handleFilterByChange = (e) => {
-        const newFilter = e.target.value;
-        setFilterBy(newFilter);
-        setFilterText('');
-        setSelectedTags([]);
-        onFilter(newFilter, newFilter === 'tag' ? [] : ''); 
-    };
+    if (selectedTags.includes(tag)) {
+      updated = selectedTags.filter(t => t !== tag);
+    } else {
+      updated = [...selectedTags, tag];
+    }
 
-    return (
-        <div className="card p-3 mb-3" style={{ position: 'sticky', top: '1rem', zIndex: 100 }}>
-            <h5>Filter Notes</h5>
-            <select
-                className="form-select mb-2"
-                value={filterBy}
-                onChange={handleFilterByChange}
+    setSelectedTags(updated);
+    onFilter('tag', updated);
+  };
+
+  return (
+    <div className="d-flex flex-column gap-3">
+
+      <div>
+        <label className="form-label fw-bold">Search</label>
+        <input
+          className="form-control"
+          type="text"
+          placeholder="Search by title..."
+          value={searchText}
+          onChange={handleSearch}
+        />
+      </div>
+
+      <div>
+        <label className="form-label fw-bold">Filter by Tags</label>
+
+        <div className="d-flex flex-wrap gap-2">
+          {allTags.length === 0 && (
+            <span className="text-muted">No tags available</span>
+          )}
+
+          {allTags.map(tag => (
+            <button
+              key={tag}
+              type="button"
+              className={`btn btn-sm ${
+                selectedTags.includes(tag) ? 'btn-primary' : 'btn-outline-primary'
+              }`}
+              onClick={() => toggleTag(tag)}
             >
-                <option value="title">Title</option>
-                <option value="content">Content</option>
-                <option value="tag">Tag</option>
-            </select>
-
-            {filterBy !== 'tag' ? (
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder={`Filter by ${filterBy}...`}
-                    value={filterText}
-                    onChange={handleTextChange}
-                />
-            ) : (
-                <div className="d-flex flex-wrap gap-1">
-                    {allTags.map(tag => (
-                        <button
-                            key={tag}
-                            className={`btn btn-sm ${selectedTags.includes(tag) ? 'btn-primary' : 'btn-outline-secondary'}`}
-                            onClick={() => toggleTag(tag)}
-                        >
-                            {tag}
-                        </button>
-                    ))}
-                </div>
-            )}
+              {tag}
+            </button>
+          ))}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default NoteFilter;
